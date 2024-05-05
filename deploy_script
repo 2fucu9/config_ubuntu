@@ -1,0 +1,503 @@
+
+deluser dog
+
+export DEBIAN_FRONTEND=noninteractive
+sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /etc/needrestart/needrestart.conf
+apt update &&  apt upgrade -y
+reboot
+
+Zaebok24!
+apt autoremove -y
+reboot
+
+
+<#ssh key login https://help.ubuntu.com/community/SSH/OpenSSH/Keys
+mkdir ~/.ssh
+chmod 700 ~/.ssh
+#generate in puttygen, copy from middle
+nano /root/.ssh/authorized_keys
+#>
+
+
+#comment uncomment https://stackoverflow.com/questions/24889346/how-to-uncomment-a-line-that-contains-a-specific-string-using-sed
+
+#nano /etc/ssh/sshd_config
+sed -i '/PasswordAuthentication yes/s/^#//g' /etc/ssh/sshd_config
+sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
+sed -i '/PubkeyAuthentication no/s/^#//g' /etc/ssh/sshd_config
+sed -i 's/PubkeyAuthentication no/PubkeyAuthentication yes/g' /etc/ssh/sshd_config
+sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config.d/50-cloud-init.conf
+systemctl restart ssh
+
+
+<#uncomment
+PermitRootLogin yes
+PubkeyAuthentication yes
+PasswordAuthentication no
+systemctl restart sshd
+#>
+
+
+
+<#wg prep
+nano /etc/sysctl.conf
+#uncomment net.ipv4.ip_forward=1
+sysctl -p
+
+apt install wireguard
+n
+ip -o -4 route show to default | awk '{print $5}'
+
+
+cd /etc/wireguard/
+
+wg genkey > server_privatekey
+wg pubkey < server_privatekey > server_publickey_for_client
+
+#for use on clients instead of generating on the client
+wg genkey | tee client0_privatekey | wg pubkey > client0_publickey
+wg genkey | tee client1_privatekey | wg pubkey > client1_publickey
+wg genkey | tee client2_privatekey | wg pubkey > client2_publickey
+wg genkey | tee client3_privatekey | wg pubkey > client3_publickey
+wg genkey | tee client4_privatekey | wg pubkey > client4_publickey
+wg genkey | tee client5_privatekey | wg pubkey > client5_publickey
+wg genkey | tee client6_privatekey | wg pubkey > client6_publickey
+wg genkey | tee client7_privatekey | wg pubkey > client7_publickey
+wg genkey | tee client8_privatekey | wg pubkey > client8_publickey
+wg genkey | tee client9_privatekey | wg pubkey > client9_publickey
+
+
+#copy and rename all conf files 
+ren ash-client0-wg0.conf fch-client0-wg0.conf
+ren ash-client1-wg0.conf fch-client1-wg0.conf
+ren ash-client2-wg0.conf fch-client2-wg0.conf
+ren ash-client3-wg0.conf fch-client3-wg0.conf
+ren ash-client4-wg0.conf fch-client4-wg0.conf
+ren ash-client5-wg0.conf fch-client5-wg0.conf
+ren ash-client6-wg0.conf fch-client6-wg0.conf
+ren ash-client7-wg0.conf fch-client7-wg0.conf
+ren ash-client8-wg0.conf fch-client8-wg0.conf
+ren ash-client9-wg0.conf fch-client9-wg0.conf
+ren ash-server-wg0.conf fch-server-wg0.conf
+
+nano /etc/wireguard/wg0.conf
+
+chmod 600 *
+
+
+wg-quick down wg0
+
+systemctl start wg-quick@wg0
+systemctl enable wg-quick@wg0
+systemctl status wg-quick@wg0
+
+wg
+
+#>
+
+<#
+
+ufw status
+ufw enable
+
+ufw allow 51820/udp
+
+ufw allow 22/tcp
+ufw allow 443/tcp
+ufw allow 80/tcp
+
+ufw allow 25/tcp
+ufw allow 110/tcp
+ufw allow 143/tcp
+ufw allow 465/tcp
+ufw allow 587/tcp
+ufw allow 993/tcp
+ufw allow 995/tcp
+ufw allow 4190/tcp
+
+ufw reload
+ufw status
+
+#>
+
+<#
+#tailscale
+curl -fsSL https://tailscale.com/install.sh | sh
+tailscale up --advertise-exit-node
+#will ask to log in via url
+tailscale ip -4
+#>
+
+
+hostnamectl set-hostname mow
+
+
+<#mail server
+#mailcow dockerized
+apt update &&  apt upgrade -y
+timedatectl set-ntp true
+
+nano /etc/systemd/timesyncd.conf
+#NTP=0.pool.ntp.org 1.pool.ntp.org 2.pool.ntp.org 3.pool.ntp.org
+
+curl -sSL https://get.docker.com/ | CHANNEL=stable sh
+# After the installation process is finished, you may need to enable the service and make sure it is started (e.g. CentOS 7)
+systemctl enable --now docker
+
+#umask
+#0022
+
+cd /opt
+git clone https://github.com/mailcow/mailcow-dockerized
+cd mailcow-dockerized
+
+./generate_config.sh
+
+docker compose pull
+docker compose up -d
+
+#restart docker containers
+docker restart $(docker ps -q)
+# reset all docker
+docker compose down -v ; docker compose up -d
+
+#https://mail.qubitpilot.net
+
+
+
+docker compose logs --tail=200 -f acme-mailcow
+#>
+
+
+<#openssl S\MIME issue can make into script makeauthority.sh 
+# Run this once
+openssl genrsa -des3 -out ca.key 4096
+openssl req -new -x509 -days 365 -key ca.key -out ca.crt
+
+#makecert.sh 
+# Run this for each email account.  The system must install the CA cert and the resulting p12 file in order to be happy.
+# https://gist.github.com/richieforeman/3166387
+
+openssl genrsa -des3 -out smime_ds_qbp.key 4096
+openssl req -new -key smime_ds_qbp.key -out smime_ds_qbp.csr
+openssl x509 -req -in smime_ds_qbp.csr -CA ca.crt -CAkey ca.key -set_serial 1 -out smime_ds_qbp.crt -setalias "Self Signed SMIME" -addtrust emailProtection -addreject clientAuth -addreject serverAuth -trustout
+openssl pkcs12 -export -in smime_ds_qbp.crt -inkey smime_ds_qbp.key -out smime_ds_qbp.p12
+
+#Zaebok24! for everything
+#>
+
+
+#download pscp to copy files between windows and ubuntu
+pscp -pw Zaebok24! D:\smime_ds_qbp.p12 root@107.175.249.200:/etc/ssl/smime_ds_qbp.p12
+pscp -pw Zaebok24! "D:\vdsina-amskey1-privatekey.pem" root@10.14.17.252:~/.ssh/vdsina-amskey1-privatekey.pem
+
+scp D:\vdsina-amskey1-privatekey.pem root@10.14.17.252:~/.ssh/vdsina-amskey1-privatekey.pem
+
+
+<#nextcloud 
+#ubuntu server pre-installed
+
+nextcloud.enable-https lets-encrypt
+
+
+#snap install
+snap install nextcloud
+
+https://nxtclo.qubitpilot.net
+root
+Zaebok24!
+
+ds@qubitpilot.net
+
+f-2u0ku.qubitpilot.net
+#>
+
+
+
+
+#password manager vaultwarden https://docs.vultr.com/how-to-install-vaultwarden-on-ubuntu-20-04
+#snap install
+
+
+apt remove docker docker.io containerd runc
+snap install core; sudo snap refresh core
+snap install docker
+mkdir ~/vaultwarden
+cd ~/vaultwarden
+reboot
+
+nano ~/vaultwarden/docker-compose.yml
+
+<#
+ version: '3'
+
+ services:
+   vaultwarden:
+     image: vaultwarden/server:latest
+     container_name: vaultwarden
+     restart: always
+     environment:
+       - LOGIN_RATELIMIT_MAX_BURST=10
+       - LOGIN_RATELIMIT_SECONDS=60
+       - ADMIN_RATELIMIT_MAX_BURST=10
+       - ADMIN_RATELIMIT_SECONDS=60
+       - ADMIN_TOKEN=83a63i8dq9fxkhektntgxz7j9uvyswat3aafeya6
+       - SENDS_ALLOWED=true
+       - EMERGENCY_ACCESS_ALLOWED=true
+       - WEB_VAULT_ENABLED=true
+       - WEBSOCKET_ENABLED=true
+       - SIGNUPS_ALLOWED=false
+       - SMTP_HOST=mail.qubitpilot.net
+       - SMTP_FROM=ds@qubitpilot.net
+       - SMTP_PORT=587
+       - SMTP_SSL=true
+       - SMTP_USERNAME=ds@qubitpilot.net
+       - SMTP_PASSWORD=Zaebok24!
+       - DOMAIN=https://vw.qubitpilot.net
+      
+     volumes:
+       - ./vw-data:/data
+
+   caddy:
+     image: caddy:2
+     container_name: caddy
+     restart: always
+     ports:
+       - 80:80
+       - 443:443
+     volumes:
+       - ./Caddyfile:/etc/caddy/Caddyfile:ro
+       - ./caddy-config:/config
+       - ./caddy-data:/data
+     environment:
+       - DOMAIN=https://vw.qubitpilot.net
+       - EMAIL=ds@qubitpilot.net
+       - LOG_FILE=/data/access.log
+       
+
+#>
+
+
+nano Caddyfile
+<#
+{$DOMAIN}:443 {
+   log {
+     level INFO
+     output file {$LOG_FILE} {
+       roll_size 10MB
+       roll_keep 10
+     }
+   }
+
+   # Get a cert by using the ACME HTTP-01 challenge.
+   tls {$EMAIL}
+
+   encode gzip
+
+   # Headers to improve security.
+   header {
+   # Enable HSTS
+   Strict-Transport-Security "max-age=31536000;"
+
+   # Enable cross-site filter (XSS)
+   X-XSS-Protection "1; mode=block"
+
+   # Disallow the site to be rendered within a frame (clickjacking protection)
+   X-Frame-Options "DENY"
+
+   # Prevent search engines from indexing
+   X-Robots-Tag "none"
+
+   # Remove Caddy branding
+   -Server
+   }
+
+   # Redirect notifications to the WebSocket.
+   reverse_proxy /notifications/hub vaultwarden:3012
+
+   reverse_proxy vaultwarden:80 {
+        header_up X-Real-IP {remote_host}
+   }
+ }
+
+#>
+
+docker-compose up -d
+docker ps
+docker-compose down
+docker-compose up -d
+
+https://vw.qubitpilot.net
+#signup
+
+
+#monitoring
+#https://askubuntu.com/questions/293426/what-system-monitoring-tools-are-available
+apt install glances -y
+reboot
+#to use: glances
+
+
+
+
+Zarbazan mimino!
+
+ds@dizna.com master Sukanaxui24!
+
+
+
+
+#ansible install https://www.server-world.info/en/note?os=Ubuntu_22.04&p=ansible&f=1
+#https://docs.ansible.com/ansible/latest/installation_guide/installation_distros.html#installing-ansible-on-ubuntu
+
+
+apt update
+apt install software-properties-common -y
+add-apt-repository --yes --update ppa:ansible/ansible
+apt install ansible -y
+
+
+mkdir /etc/ansible
+
+nano /etc/ansible/ansible.cfg 
+
+<#
+# create new : set parameters if need (SSH host key checking)
+
+[defaults]
+host_key_checking=True
+inventory = inventory
+forks = 32
+
+[ssh_connection]
+pipelining = true
+
+#>
+
+
+
+
+
+nano /etc/ansible/hosts 
+
+<#
+
+# create new
+# set target hosts
+89.110.66.138 ansible_ssh_private_key_file=~/.ssh/vdsina-amskey1-privatekey.pem
+102.211.206.14 ansible_ssh_private_key_file=~/.ssh/absolute-jnbkey1-privatekey.pem
+77.238.249.223 ansible_ssh_private_key_file=~/.ssh/vdsina-amskey2-privatekey.pem
+193.178.170.136 ansible_ssh_private_key_file=~/.ssh/vdsina-key1-privatekey.pem
+80.85.245.109 ansible_ssh_private_key_file=~/.ssh/vdsina-amskey1-privatekey.pem
+77.238.248.41 ansible_ssh_private_key_file=~/.ssh/vdsina-amskey1-privatekey.pem
+
+89.110.70.187 ansible_ssh_private_key_file=~/.ssh/vdsina-amskey1-privatekey.pem
+
+# set targets as a group
+# any group name
+
+[target_servers]
+# set targets per line
+89.110.66.138 ansible_ssh_private_key_file=~/.ssh/vdsina-amskey1-privatekey.pem
+102.211.206.14 ansible_ssh_private_key_file=~/.ssh/absolute-jnbkey1-privatekey.pem
+77.238.249.223 ansible_ssh_private_key_file=~/.ssh/vdsina-amskey2-privatekey.pem
+193.178.170.136 ansible_ssh_private_key_file=~/.ssh/vdsina-key1-privatekey.pem
+80.85.245.109 ansible_ssh_private_key_file=~/.ssh/vdsina-amskey1-privatekey.pem
+77.238.248.41 ansible_ssh_private_key_file=~/.ssh/vdsina-amskey1-privatekey.pem
+
+#>
+
+
+# confirm settings
+# show all defined hosts
+ansible all --list-hosts 
+ansible target_servers --list-hosts 
+
+ansible 77.238.248.41 -m ping 
+
+nano ufw.yml 
+<#
+- hosts: 89.110.70.187
+  # use privilege (default : root)
+  
+  tasks:
+  # task settings
+  - name: ufw is installed
+    apt:
+      name: ufw
+      state: present
+  - name: ufw is running and enabled
+    service:
+      name: ufw
+      state: started
+      enabled: yes
+
+  - name: Enable and allow all access to tcp port 22
+    community.general.ufw:
+     state: enabled
+     rule: allow
+     port: '22'
+     proto: tcp
+
+  - name: Set logging
+     community.general.ufw:
+      logging: 'on'
+
+
+#>
+ansible-playbook ufw.yml
+
+
+nano initial.yml
+
+<#
+
+- hosts: 89.110.70.187
+  
+  tasks:
+    - name: Run the equivalent of "apt-get update" as a separate step
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Upgrade the OS (apt-get dist-upgrade)
+      apt:
+        upgrade: dist
+        autoremove: true
+
+    - name: Check if a reboot is required.
+      stat:
+        path: /var/run/reboot-required
+        get_checksum: no
+      register: reboot_required_file
+
+    - name: Reboot the server (if required).
+      reboot:
+      when: reboot_required_file.stat.exists == true
+
+    - name: Remove dependencies that are no longer required.
+      ansible.builtin.apt:
+        autoremove: yes
+
+    - name: Configure sshd
+      lineinfile:
+        path: "/etc/ssh/sshd_config"
+        regex: "^(#)?{{item.key}}"
+        line: "{{item.key}} {{item.value}}"
+        state: present
+      loop:
+        - { key: "PermitRootLogin", value: "yes" }
+        - { key: "PasswordAuthentication", value: "no" } 
+      notify:
+        - restart ssh
+
+    #>
+
+
+
+
+
+
+
+
+
