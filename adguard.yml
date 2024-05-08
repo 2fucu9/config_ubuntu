@@ -1,0 +1,59 @@
+---
+- name: ensure user exists
+  user:
+    name: "{{ adguard_home_user }}"
+    state: present
+
+- name: ensure base directory exists
+  file:
+    dest: "{{ adguard_home_base_path }}"
+    owner: "{{ adguard_home_user }}"
+    group: "{{ adguard_home_group }}"
+    recurse: yes
+    state: directory
+
+- name: check if adguard is already installed
+  stat:
+    path: "{{ adguard_home_executable }}"
+  register: adguard_home_executable_stat
+
+- name: check adguard version if it is already installed
+  command: "{{ adguard_home_executable }} --version"
+  register: adguard_home_version_exists_check
+  check_mode: no
+  changed_when: adguard_home_version_exists_check.stdout.find(adguard_home_version) == -1
+  when: adguard_home_executable_stat.stat.exists
+
+- name: download adguard-home archive
+  get_url:
+    url: "{{ adguard_home_download_url }}"
+    dest: "{{ adguard_home_tmp_path }}"
+    checksum: "{{ adguard_home_checksum | default(omit, true) }}"
+  when: >
+    (not adguard_home_executable_stat.stat.exists)
+    or (adguard_home_version_exists_check is changed)
+
+- name: unarchive adguard-home
+  unarchive:
+    copy: no
+    src: "{{ adguard_home_tmp_path }}/{{ adguard_home_archive }}"
+    dest: "{{ adguard_home_base_path }}"
+    owner: "{{ adguard_home_user }}"
+    group: "{{ adguard_home_group }}"
+  become: yes
+  become_user: "{{ adguard_home_user }}"
+  when: >
+    (not adguard_home_executable_stat.stat.exists)
+    or (adguard_home_version_exists_check is changed)
+  notify: restart adguard-home
+
+- name: setup systemd service unit file
+  template:
+    src: adguard-home.service.j2
+    dest: /etc/systemd/system/adguard-home.service
+  notify: restart adguard-home
+
+- name: ensure service is enabled
+  service:
+    name: adguard-home
+    enabled: yes
