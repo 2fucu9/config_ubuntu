@@ -4,7 +4,7 @@ nano /etc/unbound/unbound.conf.d/myunbound.conf
 
 <#
 server:
-port: 53
+port: 5353
 verbosity: 0
 num-threads: 2
 outgoing-range: 512
@@ -38,8 +38,8 @@ touch /var/log/unbound.log
 chown unbound:unbound /var/log/unbound.log
 systemctl enable --now unbound
 
-dig google.com @localhost
-
+dig google.com @localhost -p 5353
+dig @localhost -p 5300 google.com
 
 
 
