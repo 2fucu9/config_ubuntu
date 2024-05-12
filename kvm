@@ -61,3 +61,10 @@ root@dlp:~# virt-install \
 
 # select [Continue in basic mode]
 # after this, installation proceeds with the common procedure
+
+
+virsh console adh
+
+
+
+
