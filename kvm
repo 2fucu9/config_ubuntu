@@ -1,0 +1,63 @@
+https://www.server-world.info/en//note?os=Ubuntu_24.04&p=kvm&f=1
+
+
+apt -y install qemu-kvm libvirt-daemon-system libvirt-daemon virtinst bridge-utils libosinfo-bin 
+
+bridges:
+    br0:
+      interfaces: [enp86s0]
+      dhcp4: false
+      addresses: [10.14.17.30/24]
+      macaddress: 48:21:0b:5d:3f:be
+      routes:
+        - to: default
+          via: 10.14.17.1
+          metric: 100
+      nameservers:
+        addresses: [10.14.17.89]
+        search: [srv.world]
+      parameters:
+        stp: false
+      dhcp6: false
+  version: 2
+
+wget http://releases.ubuntu.com/noble/ubuntu-24.04-live-server-amd64.iso
+
+# create a storage pool
+
+root@dlp:~# mkdir -p /var/kvm/images
+
+root@dlp:~# virt-install \
+--name adh \
+--ram 2048 \
+--disk path=/var/kvm/images/adh.img,size=10 \
+--vcpus 1 \
+--os-variant ubuntu24.04 \
+--network bridge=br0 \
+--graphics none \
+--console pty,target_type=serial \
+--location /var/kvm/images/ubuntu-24.04-live-server-amd64.iso,kernel=casper/vmlinuz,initrd=casper/initrd \
+--extra-args 'console=ttyS0,115200n8' 
+
+# installation starts
+================================================================================
+  Serial                                                              [ Help ]
+================================================================================
+
+  As the installer is running on a serial console, it has started in basic
+  mode, using only the ASCII character set and black and white colours.
+
+  If you are connecting from a terminal emulator such as gnome-terminal that
+  supports unicode and rich colours you can switch to "rich mode" which uses
+  unicode, colours and supports many languages.
+
+  You can also connect to the installer over the network via SSH, which will
+  allow use of rich mode.
+
+
+                          [ Continue in rich mode  > ]
+                          [ Continue in basic mode > ]
+                          [ View SSH instructions    ]
+
+# select [Continue in basic mode]
+# after this, installation proceeds with the common procedure
