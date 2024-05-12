@@ -103,11 +103,11 @@ ufw status
 ufw enable
 
 ufw allow 51820/udp
-
+ufw allow 53/udp
 ufw allow 22/tcp
 ufw allow 443/tcp
 ufw allow 80/tcp
-
+ufw allow 853/tcp
 ufw allow 25/tcp
 ufw allow 110/tcp
 ufw allow 143/tcp
