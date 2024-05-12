@@ -23,34 +23,63 @@ nano /etc/unbound/unbound.conf.d/myunbound.conf
 
 <#
 server:
-port: 53
-verbosity: 0
-num-threads: 2
-outgoing-range: 512
-num-queries-per-thread: 1024
-msg-cache-size: 32m
-interface: 0.0.0.0
-rrset-cache-size: 64m
-cache-max-ttl: 86400
-infra-host-ttl: 60
-infra-lame-ttl: 120
-access-control: 127.0.0.0/8 allow
-access-control: 0.0.0.0/0 allow
-username: unbound
-directory: "/etc/unbound"
-logfile: "/var/log/unbound.log"
-use-syslog: no
-hide-version: yes
-so-rcvbuf: 4m
-so-sndbuf: 4m
-do-ip4: yes
-do-ip6: no
-do-udp: yes
-do-tcp: yes
-remote-control:
-control-enable: yes
-control-port: 953
-control-interface: 0.0.0.0
+  interface: 127.0.0.1
+  interface: ::0
+  access-control: 10.14.0.0/16 allow
+  access-control: ::1 allow
+  verbosity: 1
+  port: 53
+  do-ip6: no
+  do-ip4: yes
+  do-udp: yes
+  do-tcp: yes
+  # Set number of threads to use
+  num-threads: 4
+  # Hide DNS Server info
+  hide-identity: yes
+  hide-version: yes
+  # Limit DNS Fraud and use DNSSEC
+  harden-glue: yes
+  harden-dnssec-stripped: yes
+  harden-referral-path: yes
+  use-caps-for-id: yes
+  harden-algo-downgrade: no
+  qname-minimisation: yes
+  aggressive-nsec: yes
+  rrset-roundrobin: yes
+
+  # If DNSSEC isnt working uncomment the following line
+  # auto-trust-anchor-file: "/var/lib/unbound/root.key"
+
+
+  # Minimum lifetime of cache entries in seconds
+  cache-min-ttl: 300
+  # Configure TTL of Cache
+  cache-max-ttl: 14400
+  # Optimizations
+  msg-cache-slabs: 8
+  rrset-cache-slabs: 8
+  infra-cache-slabs: 8
+  key-cache-slabs: 8
+  serve-expired: yes
+  serve-expired-ttl: 3600
+  edns-buffer-size: 1232
+  prefetch: yes
+  prefetch-key: yes
+  target-fetch-policy: "3 2 1 1 1"
+  unwanted-reply-threshold: 10000000
+  # Set cache size
+  rrset-cache-size: 256m
+  msg-cache-size: 128m
+  # increase buffer size so that no messages are lost in traffic spikes
+  so-rcvbuf: 1m
+  private-address: 192.168.0.0/16
+  private-address: 169.254.0.0/16
+  private-address: 172.16.0.0/12
+  private-address: 10.0.0.0/8
+  private-address: fd00::/8
+  private-address: fe80::/10
+
 #>
 
 touch /var/log/unbound.log
@@ -58,7 +87,7 @@ chown unbound:unbound /var/log/unbound.log
 systemctl enable --now unbound
 
 dig google.com @localhost -p 5353
-dig @localhost -p 5300 google.com
+
 
 
 
