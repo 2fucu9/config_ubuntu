@@ -105,6 +105,7 @@ ufw enable
 ufw allow 51820/udp
 
 ufw allow 53/udp
+ufw allow 5353/udp
 ufw allow 22/tcp
 ufw allow 443/tcp
 ufw allow 80/tcp
