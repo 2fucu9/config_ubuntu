@@ -6,6 +6,7 @@ ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
 reboot
 
 apt-get install unbound -y
+reboot
 
 nano /etc/unbound/unbound.conf.d/myunbound.conf
 
