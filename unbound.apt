@@ -28,7 +28,7 @@ server:
   access-control: 10.14.0.0/16 allow
   access-control: ::1 allow
   verbosity: 1
-  port: 53
+  port: 5353
   do-ip6: no
   do-ip4: yes
   do-udp: yes
