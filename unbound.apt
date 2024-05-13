@@ -85,7 +85,7 @@ server:
 touch /var/log/unbound.log
 chown unbound:unbound /var/log/unbound.log
 systemctl enable --now unbound
-
+reboot
 dig google.com @localhost -p 5353
 
 
