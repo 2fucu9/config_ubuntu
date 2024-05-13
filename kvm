@@ -71,9 +71,9 @@ virsh start adh-wg-tail
 virsh autostart adh-wg-tail
 virsh autostart --disable adh
 virsh shutdown adh
-
+virt-clone --original adh-wg-tail --name template --file /var/kvm/images/template.img 
 virsh list --all
 
-
-
+virsh snapshot-create-as --domain adh-wg-tail --name "adh-wg-tail-snap1"
+virsh snapshot-list --domain adh-wg-tail
 
