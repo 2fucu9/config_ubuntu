@@ -13,6 +13,17 @@ Zaebok24!
 apt autoremove -y
 reboot
 
+#upgrade release https://linuxconfig.org/ubuntu-upgrade-to-24-04-noble-numbat-a-step-by-step-howto-guide
+lsb_release -a
+ufw allow 1022/tcp
+ufw reload
+apt install update-manager-core -y
+do-release-upgrade
+do-release-upgrade -d
+
+
+
+
 
 <#ssh key login https://help.ubuntu.com/community/SSH/OpenSSH/Keys
 mkdir ~/.ssh
