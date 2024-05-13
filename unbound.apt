@@ -10,7 +10,7 @@ DNSStubListener=no
 
 mv /etc/resolv.conf /etc/resolv.conf.backup
 ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
-systemctl reload-or-restart systemd-resolved
+#systemctl reload-or-restart systemd-resolved
 reboot
 
 lsof -i -P -n | grep LISTEN
