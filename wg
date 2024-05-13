@@ -2,6 +2,8 @@
 <#wg prep
 nano /etc/sysctl.conf
 #uncomment net.ipv4.ip_forward=1
+#and net.ipv6.conf.all.forwarding=1
+
 sysctl -p
 
 apt install wireguard -y
