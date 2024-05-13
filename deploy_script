@@ -42,59 +42,6 @@ systemctl restart sshd
 
 
 
-<#wg prep
-nano /etc/sysctl.conf
-#uncomment net.ipv4.ip_forward=1
-sysctl -p
-
-apt install wireguard -y
-
-ip -o -4 route show to default | awk '{print $5}'
-
-
-cd /etc/wireguard/
-
-wg genkey > server_privatekey
-wg pubkey < server_privatekey > server_publickey_for_client
-
-#for use on clients instead of generating on the client
-wg genkey | tee client0_privatekey | wg pubkey > client0_publickey
-wg genkey | tee client1_privatekey | wg pubkey > client1_publickey
-wg genkey | tee client2_privatekey | wg pubkey > client2_publickey
-wg genkey | tee client3_privatekey | wg pubkey > client3_publickey
-wg genkey | tee client4_privatekey | wg pubkey > client4_publickey
-wg genkey | tee client5_privatekey | wg pubkey > client5_publickey
-wg genkey | tee client6_privatekey | wg pubkey > client6_publickey
-wg genkey | tee client7_privatekey | wg pubkey > client7_publickey
-wg genkey | tee client8_privatekey | wg pubkey > client8_publickey
-wg genkey | tee client9_privatekey | wg pubkey > client9_publickey
-
-
-#copy and rename all conf files 
-ren ash-client0-wg0.conf fch-client0-wg0.conf
-ren ash-client1-wg0.conf fch-client1-wg0.conf
-ren ash-client2-wg0.conf fch-client2-wg0.conf
-ren ash-client3-wg0.conf fch-client3-wg0.conf
-ren ash-client4-wg0.conf fch-client4-wg0.conf
-ren ash-client5-wg0.conf fch-client5-wg0.conf
-ren ash-client6-wg0.conf fch-client6-wg0.conf
-ren ash-client7-wg0.conf fch-client7-wg0.conf
-ren ash-client8-wg0.conf fch-client8-wg0.conf
-ren ash-client9-wg0.conf fch-client9-wg0.conf
-ren ash-server-wg0.conf fch-server-wg0.conf
-
-nano /etc/wireguard/wg0.conf
-
-chmod 600 *
-
-
-wg-quick down wg0
-
-systemctl start wg-quick@wg0
-systemctl enable wg-quick@wg0
-systemctl status wg-quick@wg0
-
-wg
 
 #>
 
