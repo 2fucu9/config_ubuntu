@@ -65,6 +65,15 @@ root@dlp:~# virt-install \
 
 virsh console adh
 
+virsh nodecpumap 
+
+virsh start adh-wg-tail
+virsh autostart adh-wg-tail
+virsh autostart --disable adh
+virsh shutdown adh
+
+virsh list --all
+
 
 
 
