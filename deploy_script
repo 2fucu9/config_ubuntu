@@ -74,13 +74,6 @@ ufw status
 
 #>
 
-<#
-#tailscale
-curl -fsSL https://tailscale.com/install.sh | sh
-tailscale up --advertise-exit-node
-#will ask to log in via url
-tailscale ip -4
-#>
 
 
 hostnamectl set-hostname mow
