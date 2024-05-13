@@ -1,3 +1,25 @@
 
 snap install adguard-home
 reboot
+
+snap install --classic certbot
+
+ln -s /snap/bin/certbot /usr/bin/certbot
+
+certbot certonly --manual --preferred-challenges=dns --preferred-chain="ISRG Root X1"
+
+Successfully received certificate.
+Certificate is saved at: /etc/letsencrypt/live/adguard.qubitpilot.net/fullchain.pem
+Key is saved at:         /etc/letsencrypt/live/adguard.qubitpilot.net/privkey.pem
+This certificate expires on 2024-08-10.
+
+
+
+
+
+
+
+
+
+
+
