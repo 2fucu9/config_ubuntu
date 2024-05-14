@@ -1,6 +1,7 @@
 
 snap install adguard-home
 reboot
+http://servername:3000
 
 snap install --classic certbot
 
