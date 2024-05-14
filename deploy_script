@@ -38,6 +38,7 @@ nano /root/.ssh/authorized_keys
 #comment uncomment https://stackoverflow.com/questions/24889346/how-to-uncomment-a-line-that-contains-a-specific-string-using-sed
 
 #nano /etc/ssh/sshd_config
+# nano /etc/ssh/sshd_config.d/50*
 sed -i '/PasswordAuthentication yes/s/^#//g' /etc/ssh/sshd_config
 sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
 sed -i '/PubkeyAuthentication no/s/^#//g' /etc/ssh/sshd_config
