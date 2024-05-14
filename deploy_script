@@ -15,6 +15,7 @@ reboot
 
 #upgrade release https://linuxconfig.org/ubuntu-upgrade-to-24-04-noble-numbat-a-step-by-step-howto-guide
 lsb_release -a
+#set Prompt=normal in /etc/update-manager/release-upgrades
 ufw allow 1022/tcp
 ufw reload
 apt install update-manager-core -y
