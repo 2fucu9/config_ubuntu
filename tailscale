@@ -17,3 +17,6 @@ test $? -eq 0 || echo 'An error occurred.'
 nano /etc/systemd/resolved.conf
 DNS=89.110.66.138
 FallbackDNS=89.110.66.138
+
+tailscale set --auto-update
+
