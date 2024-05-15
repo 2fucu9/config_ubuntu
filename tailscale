@@ -20,3 +20,27 @@ FallbackDNS=89.110.66.138
 
 tailscale set --auto-update
 
+#Policy in admin console
+{
+#  "groups": {
+#   "group:dev": ["alice@example.com", "bob@example.com"]
+  },
+  "acls": [
+    // Users in group:dev and devices in subnets 192.168.0.0/24 and
+    // 192.168.1.0/24 can access devices in subnets 192.168.0.0/24 and
+    // 192.168.1.0/24
+    { "action": "accept",
+      "src": ["10.14.17.0/24", "100.0.0.0/8"],
+      "dst": ["10.14.17.0/24:*", "100.0.0.0/8:*"]
+    }
+  ]
+}
+
+
+tailscale up --accept-routes
+
+
+
+
+
+
