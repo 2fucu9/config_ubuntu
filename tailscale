@@ -20,6 +20,7 @@ FallbackDNS=89.110.66.138
 
 tailscale set --auto-update
 tailscale up --accept-routes --advertise-exit-node
+tailscale up --advertise-routes=10.14.17.0/24 --accept-routes --advertise-exit-node
 
 
 
