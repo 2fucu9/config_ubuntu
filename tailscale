@@ -19,6 +19,9 @@ DNS=89.110.66.138
 FallbackDNS=89.110.66.138
 
 tailscale set --auto-update
+tailscale up --accept-routes --advertise-exit-node
+
+
 
 #Policy in admin console
 {
