@@ -43,6 +43,8 @@ tailscale up --advertise-routes=10.14.17.0/24 --accept-routes --advertise-exit-n
 
 tailscale up --accept-routes
 
+#glinet exit node
+https://forum.gl-inet.com/t/brume-2-as-a-tailscale-exit-node/27663/7
 
 
 
