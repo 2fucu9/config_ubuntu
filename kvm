@@ -22,22 +22,28 @@ bridges:
   version: 2
 
 wget http://releases.ubuntu.com/noble/ubuntu-24.04-live-server-amd64.iso
+wget http://releases.ubuntu.com/noble/ubuntu-24.04-desktop-amd64.iso
 
 # create a storage pool
+ mkdir -p /var/kvm/images
+cd /var/kvm/images
 
-root@dlp:~# mkdir -p /var/kvm/images
-
-root@dlp:~# virt-install \
---name adh \
---ram 2048 \
---disk path=/var/kvm/images/adh.img,size=10 \
---vcpus 1 \
+#create VM
+ virt-install \
+--name 2404dsk \
+--ram 4096 \
+--disk path=/var/kvm/images/2404dsk.img,size=40 \
+--vcpus 4 \
 --os-variant ubuntu24.04 \
 --network bridge=br0 \
---graphics none \
+--graphics spice,listen=0.0.0.0,port=5962,password=password,defaultMode='insecure' \
+--video qxl \
+--location /var/kvm/images/ubuntu-24.04-desktop-amd64.iso,kernel=casper/vmlinuz,initrd=casper/initrd \
+--cdrom /var/kvm/images/ubuntu-24.04-desktop-amd64.iso
 --console pty,target_type=serial \
---location /var/kvm/images/ubuntu-24.04-live-server-amd64.iso,kernel=casper/vmlinuz,initrd=casper/initrd \
 --extra-args 'console=ttyS0,115200n8' 
+
+#--graphics spice,listen=0.0.0.0,password=password,keymap=ja \
 
 # installation starts
 ================================================================================
@@ -76,4 +82,6 @@ virsh list --all
 
 virsh snapshot-create-as --domain adh-wg-tail --name "adh-wg-tail-snap1"
 virsh snapshot-list --domain adh-wg-tail
+
+
 
