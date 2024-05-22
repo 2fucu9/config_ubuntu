@@ -92,7 +92,7 @@ ufw status
 
 
 hostnamectl set-hostname mow
-
+timedatectl set-timezone UTC
 
 <#mail server
 #mailcow dockerized
