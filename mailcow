@@ -1,0 +1,40 @@
+<#mail server
+#mailcow dockerized
+apt update &&  apt upgrade -y
+timedatectl set-ntp true
+
+nano /etc/systemd/timesyncd.conf
+#NTP=0.pool.ntp.org 1.pool.ntp.org 2.pool.ntp.org 3.pool.ntp.org
+
+apt install apt-transport-https ca-certificates curl software-properties-common 
+curl -sSL https://get.docker.com/ | CHANNEL=stable sh
+# After the installation process is finished, you may need to enable the service and make sure it is started (e.g. CentOS 7)
+systemctl enable --now docker
+apt-get install docker-compose-plugin
+
+#umask
+#0022
+
+cd /opt/mailcow-dockerized
+git clone https://github.com/mailcow/mailcow-dockerized
+cd mailcow-dockerized
+
+./generate_config.sh
+
+docker compose pull
+docker compose up -d
+
+#restart docker containers
+docker restart $(docker ps -q)
+# reset all docker
+docker compose down -v ; docker compose up -d
+
+#https://mail.qubitpilot.net
+
+#backup restore
+https://docs.mailcow.email/backup_restore/b_n_r-backup/
+
+
+docker compose logs --tail=200 -f acme-mailcow
+#>
+
