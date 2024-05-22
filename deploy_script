@@ -111,7 +111,7 @@ apt-get install docker-compose-plugin
 #umask
 #0022
 
-cd /opt
+cd /opt/mailcow-dockerized
 git clone https://github.com/mailcow/mailcow-dockerized
 cd mailcow-dockerized
 
