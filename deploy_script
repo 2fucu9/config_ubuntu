@@ -159,6 +159,8 @@ scp D:\vdsina-amskey1-privatekey.pem root@10.14.17.252:~/.ssh/vdsina-amskey1-pri
 scp -i ~/.ssh/fchkey1.pem /var/kvm/images/adh-wg-tail.img root@10.14.17.252:~/
 scp -i ~/.ssh/fchkey1.pem root@10.14.17.252:~/adh-wg-tail.img ~/ 
 
+scp -i ~/.ssh/fchkey1.pem /var/kvm/images/adh-wg-tail.img root@10.14.17.252:~/
+
 scp D:\vdsina-amskey1-privatekey.pem root@10.14.17.252:~/.ssh/vdsina-amskey1-privatekey.pem
 
 <#nextcloud 
