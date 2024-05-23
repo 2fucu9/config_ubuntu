@@ -15,7 +15,8 @@ Key is saved at:         /etc/letsencrypt/live/adguard.qubitpilot.net/privkey.pe
 This certificate expires on 2024-08-10.
 
 
-nano /var/snap/adguard-home/current
+nano /var/snap/adguard-home/current/AdGuardHome.yaml
+
 
 
 cd /snap/adguard-home/current
