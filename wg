@@ -8,7 +8,7 @@ cat privatekeyclient
 cat publickeyclient 
 
 
- nano /etc/wireguard/wg1.conf
+ nano /etc/wireguard/wg0.conf
 #add
 [Interface]
 PrivateKey = eOEjASyGDvf3JfvYe1JhkV7vCgZ746OOpM8pQYnF02s=
@@ -25,15 +25,15 @@ PersistentKeepalive = 25
 
 chmod 600 *
 
- wg-quick up wg1
+ wg-quick up wg0
 ping 10.0.81.1
  wg show
 
 #enable client to auto start
- wg-quick up wg1
+ wg-quick up wg0
 
 #stop client
- wg-quick down wg1
+ wg-quick down wg0
 
 
 
