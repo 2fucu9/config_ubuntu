@@ -11,7 +11,7 @@ cat publickeyclient
  nano /etc/wireguard/wg1.conf
 #add
 [Interface]
-PrivateKey = YOgRB6tSr9cU2Dvf+hnAGrOgJZhE+n5NyIp8+lsjVFc=
+PrivateKey = eOEjASyGDvf3JfvYe1JhkV7vCgZ746OOpM8pQYnF02s=
 Address = 10.0.81.2/32
 DNS =  185.247.226.205
 
