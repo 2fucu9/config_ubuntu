@@ -13,12 +13,12 @@ cat publickeyclient
 [Interface]
 PrivateKey = YOgRB6tSr9cU2Dvf+hnAGrOgJZhE+n5NyIp8+lsjVFc=
 Address = 10.0.81.2/32
-DNS =  9.9.9.9
+DNS =  185.247.226.205
 
 [Peer]
 PublicKey = wuD+hqa+L4b1bv8/NEWpIDF1wCiQNgVMKwGTnXfMaHs=
 AllowedIPs = 0.0.0.0/0
-Endpoint = f-2u0ku.qubitpilot.net:51820
+Endpoint = f2u.qubitpilot.net:51820
 PersistentKeepalive = 25
 #save
 
