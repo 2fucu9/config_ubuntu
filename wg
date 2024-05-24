@@ -1,5 +1,46 @@
+Wireguard Client
+# need for mow
 
-<#wg prep
+apt install wireguard -y
+cd /etc/wireguard/
+wg genkey | tee privatekeyclient | wg pubkey > publickeyclient
+cat privatekeyclient
+cat publickeyclient 
+
+
+ nano /etc/wireguard/wg1.conf
+#add
+[Interface]
+PrivateKey = YOgRB6tSr9cU2Dvf+hnAGrOgJZhE+n5NyIp8+lsjVFc=
+Address = 10.0.81.2/32
+DNS =  9.9.9.9
+
+[Peer]
+PublicKey = wuD+hqa+L4b1bv8/NEWpIDF1wCiQNgVMKwGTnXfMaHs=
+AllowedIPs = 0.0.0.0/0
+Endpoint = f-2u0ku.qubitpilot.net:51820
+PersistentKeepalive = 25
+#save
+
+
+chmod 600 *
+
+ wg-quick up wg1
+ping 10.0.81.1
+ wg show
+
+#enable client to auto start
+ wg-quick up wg1
+
+#stop client
+ wg-quick down wg1
+
+
+
+
+
+
+<#wg serevr prep
 nano /etc/sysctl.conf
 #uncomment net.ipv4.ip_forward=1
 #and net.ipv6.conf.all.forwarding=1
