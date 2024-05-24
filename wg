@@ -7,6 +7,7 @@ wg genkey | tee privatekeyclient | wg pubkey > publickeyclient
 cat privatekeyclient
 cat publickeyclient 
 
+ln -s /usr/bin/resolvectl /usr/local/bin/resolvconf
 
  nano /etc/wireguard/wg0.conf
 #add
