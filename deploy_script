@@ -10,7 +10,7 @@ sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /e
 apt update &&  apt upgrade -y
 reboot
 
-Zaebok24!
+
 apt autoremove -y
 reboot
 
@@ -107,7 +107,7 @@ openssl req -new -key smime_ds_qbp.key -out smime_ds_qbp.csr
 openssl x509 -req -in smime_ds_qbp.csr -CA ca.crt -CAkey ca.key -set_serial 1 -out smime_ds_qbp.crt -setalias "Self Signed SMIME" -addtrust emailProtection -addreject clientAuth -addreject serverAuth -trustout
 openssl pkcs12 -export -in smime_ds_qbp.crt -inkey smime_ds_qbp.key -out smime_ds_qbp.p12
 
-#Zaebok24! for everything
+
 #>
 
 
@@ -137,7 +137,6 @@ snap install nextcloud
 
 https://nxtclo.qubitpilot.net
 root
-Zaebok24!
 
 ds@qubitpilot.net
 
@@ -272,9 +271,7 @@ reboot
 
 
 
-Zarbazan mimino!
 
-ds@dizna.com master Sukanaxui24!
 
 
 
