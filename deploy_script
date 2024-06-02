@@ -114,10 +114,10 @@ openssl req -new -x509 -days 365 -key ca.key -out ca.crt
 # Run this for each email account.  The system must install the CA cert and the resulting p12 file in order to be happy.
 # https://gist.github.com/richieforeman/3166387
 
-openssl genrsa -des3 -out smime_ds_qbp.key 4096
-openssl req -new -key smime_ds_qbp.key -out smime_ds_qbp.csr
-openssl x509 -req -in smime_ds_qbp.csr -CA ca.crt -CAkey ca.key -set_serial 1 -out smime_ds_qbp.crt -setalias "Self Signed SMIME" -addtrust emailProtection -addreject clientAuth -addreject serverAuth -trustout
-openssl pkcs12 -export -in smime_ds_qbp.crt -inkey smime_ds_qbp.key -out smime_ds_qbp.p12
+openssl genrsa -des3 -out smime_ds_qubitpilot.key 4096
+openssl req -new -key smime_ds_qubitpilot.key -out smime_ds_qubitpilot.csr
+openssl x509 -req -in smime_ds_qubitpilot.csr -CA ca.crt -CAkey ca.key -set_serial 1 -out smime_ds_qubitpilot.crt -setalias "Self Signed SMIME" -addtrust emailProtection -addreject clientAuth -addreject serverAuth -trustout
+openssl pkcs12 -export -in smime_ds_qubitpilot.crt -inkey smime_ds_qubitpilot.key -out smime_ds_qubitpilot.p12
 
 
 #>
