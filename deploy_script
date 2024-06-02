@@ -108,6 +108,7 @@ timedatectl set-timezone UTC
 # Run this once
 openssl genrsa -des3 -out ca.key 4096
 openssl req -new -x509 -days 365 -key ca.key -out ca.crt
+#same pass as mail server root
 
 #makecert.sh 
 # Run this for each email account.  The system must install the CA cert and the resulting p12 file in order to be happy.
