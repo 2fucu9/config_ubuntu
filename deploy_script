@@ -124,10 +124,9 @@ openssl pkcs12 -export -in smime_ds_qubitpilot.crt -inkey smime_ds_qubitpilot.ke
 
 
 #download pscp to copy files between windows and ubuntu
-pscp -pw Zaebok24! D:\smime_ds_qbp.p12 root@107.175.249.200:/etc/ssl/smime_ds_qbp.p12
+pscp -pw !kYCB#9S5T#SmohehVPw9%YUh2X5kH7Y root@77.238.249.23:/root/pki/smime_ds_qubitpilot.p12 D:\smime_ds_qubitpilot.p12 
 pscp -pw Zaebok24! "D:\vdsina-amskey1-privatekey.pem" root@10.14.17.252:~/.ssh/vdsina-amskey1-privatekey.pem
-
-pscp -i "C:\Users\media\Nextcloud\vds\ams\vdsina-amskey1-privatekey.ppk" root@77.238.249.23:/root/smime/smime_ds_qbp.p12 "D:\smime_ds_qbp.p12"
+pscp -i "C:\Users\media\Nextcloud2\vds\ams\vdsina-amskey1-privatekey.ppk" root@77.238.249.23:/root/pki/ca.key "D:\ca.key" 
 
 
 scp D:\vdsina-amskey1-privatekey.pem root@10.14.17.252:~/.ssh/vdsina-amskey1-privatekey.pem
