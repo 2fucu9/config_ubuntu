@@ -24,7 +24,11 @@ apt install update-manager-core -y
 do-release-upgrade
 do-release-upgrade -d
 
+#net testing
+apt install iperf
+iperf -s
 
+apt install iftop
 
 
 
