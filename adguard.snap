@@ -23,6 +23,8 @@ snap install --classic certbot
 ln -s /snap/bin/certbot /usr/bin/certbot
 
 certbot certonly --manual --preferred-challenges=dns --preferred-chain="ISRG Root X1"
+ds@qubitpilot.net
+adguard.qubitpilot.net
 
 Successfully received certificate.
 Certificate is saved at: /etc/letsencrypt/live/adguard.qubitpilot.net/fullchain.pem
