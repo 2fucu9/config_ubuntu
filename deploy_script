@@ -50,7 +50,7 @@ sed -i '/PubkeyAuthentication no/s/^#//g' /etc/ssh/sshd_config
 sed -i 's/PubkeyAuthentication no/PubkeyAuthentication yes/g' /etc/ssh/sshd_config
 sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config.d/50-cloud-init.conf
 systemctl restart ssh
-
+systemctl restart ssh.service
 
 <#uncomment
 PermitRootLogin yes
