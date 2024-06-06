@@ -59,7 +59,13 @@ PasswordAuthentication no
 systemctl restart sshd
 #>
 
-
+#ipv6 disable
+ip -6 addr show
+nano /etc/default/grub
+GRUB_CMDLINE_LINUX_DEFAULT="ipv6.disable=1"
+update-grub
+reboot
+ip -6 addr show
 
 
 #>
