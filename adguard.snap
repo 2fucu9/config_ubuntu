@@ -7,6 +7,7 @@ nano /etc/systemd/resolved.conf.d/adguardhome.conf
 [Resolve]
 DNS=127.0.0.1
 DNSStubListener=no
+lsof -i -P -n | grep LISTEN
 
 mv /etc/resolv.conf /etc/resolv.conf.backup
 ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
