@@ -13,6 +13,7 @@ mv /etc/resolv.conf /etc/resolv.conf.backup
 ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
 #systemctl reload-or-restart systemd-resolved
 reboot
+
 snap install adguard-home
 reboot
 http://servername:3000
