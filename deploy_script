@@ -5,6 +5,10 @@ wget http://releases.ubuntu.com/noble/ubuntu-24.04-desktop-amd64.iso
 
 deluser dog
 
+rm -r ansible_selfhosted
+git clone https://oauth2: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@github.com/2fucu9/ansible_selfhosted
+cd ansible_selfhosted
+
 export DEBIAN_FRONTEND=noninteractive
 sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /etc/needrestart/needrestart.conf
 apt update &&  apt upgrade -y
