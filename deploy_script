@@ -314,8 +314,8 @@ add-apt-repository --yes --update ppa:ansible/ansible
 apt install ansible -y
 
 
-mkdir /etc/ansible
-
+#mkdir /etc/ansible
+ansible-config init --disabled > ansible.cfg
 nano /etc/ansible/ansible.cfg 
 
 <#
