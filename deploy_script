@@ -157,6 +157,7 @@ scp D:\soft\nuc13\I226-V_Release_29.1.1.1\PRO1000\LINUX\igb-5.16.3.tar.gz root@1
 <#nextcloud 
 #ubuntu server pre-installed
 
+#also use for renewal
 nextcloud.enable-https lets-encrypt
 
 
