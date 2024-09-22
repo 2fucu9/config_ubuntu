@@ -38,3 +38,11 @@ https://docs.mailcow.email/backup_restore/b_n_r-backup/
 docker compose logs --tail=200 -f acme-mailcow
 #>
 
+#updating
+cd /opt/mailcow-dockerized
+# - Check for updates and show changes
+./update.sh --check
+
+# - update
+./update.sh 
+
