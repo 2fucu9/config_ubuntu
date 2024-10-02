@@ -152,7 +152,8 @@ scp D:\vdsina-amskey1-privatekey.pem root@10.14.17.252:~/.ssh/vdsina-amskey1-pri
 
 scp D:\soft\nuc13\I226-V_Release_29.1.1.1\PRO1000\LINUX\igb-5.16.3.tar.gz root@10.14.17.252:~/.ssh/vdsina-amskey1-privatekey.pem
 
-
+#shadowsocks-libev
+https://www.linuxbabe.com/ubuntu/shadowsocks-libev-proxy-server-ubuntu
 
 <#nextcloud 
 #ubuntu server pre-installed
