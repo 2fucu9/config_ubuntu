@@ -166,7 +166,12 @@ set root acct
 nextcloud.enable-https lets-encrypt
 ds@qubitpilot.net
 nextcloud.occ config:system:set trusted_domains 0 --value=nxtclo.qubitpilot.net
+snap run nextcloud.occ config:system:set default_phone_region --value=RU
 snap restart nextcloud
+
+apt install imagemagick
+apt install php-imagick
+php -m | grep imagick
 
 f-2u.qubitpilot.net
 
