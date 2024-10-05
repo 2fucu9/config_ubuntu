@@ -157,20 +157,18 @@ https://www.linuxbabe.com/ubuntu/shadowsocks-libev-proxy-server-ubuntu
 
 <#nextcloud 
 #ubuntu server pre-installed
-
-#also use for renewal. enable ufw 80 before renewal
-nextcloud.enable-https lets-encrypt
-
-
 #snap install
 snap install nextcloud
 
-https://nxtclo.qubitpilot.net
-root
-
+http://nxtclo.qubitpilot.net
+set root acct
+#also use for renewal. enable ufw 80 before renewal
+nextcloud.enable-https lets-encrypt
 ds@qubitpilot.net
+nextcloud.occ config:system:set trusted_domains 0 --value=nxtclo.qubitpilot.net
+snap restart nextcloud
 
-f-2u0ku.qubitpilot.net
+f-2u.qubitpilot.net
 
 #update
 snap refresh nextcloud
