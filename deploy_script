@@ -304,7 +304,15 @@ apt install glances -y
 reboot
 #to use: glances
 
+#update VW
+docker stop vaultwarden
 
+docker rm vaultwarden
+
+docker pull vaultwarden/server:latest
+cd ~/vaultwarden
+
+docker-compose up -d
 
 
 
