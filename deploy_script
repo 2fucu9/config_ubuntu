@@ -15,9 +15,11 @@ sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /e
 apt update &&  apt upgrade -y
 reboot
 
-
 apt autoremove -y
 reboot
+
+#for errors with updating snap store
+snap-store --quit && sudo snap refresh snap-store
 
 #upgrade release https://linuxconfig.org/ubuntu-upgrade-to-24-04-noble-numbat-a-step-by-step-howto-guide
 lsb_release -a
