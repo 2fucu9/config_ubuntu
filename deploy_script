@@ -121,20 +121,6 @@ hostnamectl set-hostname mow
 timedatectl set-timezone UTC
 
 
-<#openssl S\MIME issue can make into script makeauthority.sh 
-# Run this once
-openssl genrsa -des3 -out ca.key 4096
-openssl req -new -x509 -days 365 -key ca.key -out ca.crt
-#same pass as mail server root
-
-#makecert.sh 
-# Run this for each email account.  The system must install the CA cert and the resulting p12 file in order to be happy.
-# https://gist.github.com/richieforeman/3166387
-
-openssl genrsa -des3 -out smime_ds_qubitpilot.key 4096
-openssl req -new -key smime_ds_qubitpilot.key -out smime_ds_qubitpilot.csr
-openssl x509 -req -in smime_ds_qubitpilot.csr -CA ca.crt -CAkey ca.key -set_serial 1 -out smime_ds_qubitpilot.crt -setalias "Self Signed SMIME" -addtrust emailProtection -addreject clientAuth -addreject serverAuth -trustout
-openssl pkcs12 -export -in smime_ds_qubitpilot.crt -inkey smime_ds_qubitpilot.key -out smime_ds_qubitpilot.p12
 
 
 #>
@@ -154,8 +140,12 @@ scp D:\vdsina-amskey1-privatekey.pem root@10.14.17.252:~/.ssh/vdsina-amskey1-pri
 
 scp D:\soft\nuc13\I226-V_Release_29.1.1.1\PRO1000\LINUX\igb-5.16.3.tar.gz root@10.14.17.252:~/.ssh/vdsina-amskey1-privatekey.pem
 
-#shadowsocks-libev
-https://www.linuxbabe.com/ubuntu/shadowsocks-libev-proxy-server-ubuntu
+#3x-ui server
+#generate ssl
+openssl req -x509 -keyout /etc/ssl/certs/3x-ui.key -out /etc/ssl/certs/3x-ui.pem -newkey rsa:4096 -sha256 -days 3650 -nodes -new
+#install 3x-ui
+bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)
+#change access port to random, specify ssl details in panel config
 
 <#nextcloud 
 #ubuntu server pre-installed
