@@ -113,11 +113,15 @@ ufw enable
 ufw status
 reboot
 
+#ufw disable IPv6
+nano /etc/default/ufw
+IPV6=no
+
 #>
 
 
 
-hostnamectl set-hostname mow
+hostnamectl set-hostname nxtclo-is
 timedatectl set-timezone UTC
 
 
@@ -157,7 +161,7 @@ set root acct
 #also use for renewal. enable ufw 80 before renewal
 nextcloud.enable-https lets-encrypt
 ds@qubitpilot.net
-nextcloud.occ config:system:set trusted_domains 0 --value=nxtclo.qubitpilot.net
+nextcloud.occ config:system:set trusted_domains 0 --value=nxtclo-is.qubitpilot.net
 snap run nextcloud.occ config:system:set default_phone_region --value=RU
 snap restart nextcloud
 
@@ -165,7 +169,7 @@ apt install imagemagick
 apt install php-imagick
 php -m | grep imagick
 
-f-2u.qubitpilot.net
+
 
 #update
 snap refresh nextcloud
