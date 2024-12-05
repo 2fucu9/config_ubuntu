@@ -121,7 +121,7 @@ IPV6=no
 
 
 
-hostnamectl set-hostname nxtclo-is
+hostnamectl set-hostname vw-is
 timedatectl set-timezone UTC
 
 
@@ -217,7 +217,7 @@ nano ~/vaultwarden/docker-compose.yml
        - SMTP_PORT=587
        - SMTP_SSL=true
        - SMTP_USERNAME=ds@qubitpilot.net
-       - SMTP_PASSWORD=Zaebok24!
+       - SMTP_PASSWORD=!kYCB#9S5T#SmohehVPw9%YUh2X5kH7Y
        - DOMAIN=https://vw.qubitpilot.net
       
      volumes:
