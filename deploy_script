@@ -74,6 +74,8 @@ ufw enable
 ufw allow 51820/udp
 
 ufw allow 27987/tcp
+ufw allow 57023/tcp
+
 ufw allow 22/tcp
 ufw allow 443/tcp
 ufw allow 80/tcp
@@ -112,7 +114,7 @@ IPV6=no
 
 
 
-hostnamectl set-hostname 3xui-ru
+hostnamectl set-hostname 3xui-ny
 timedatectl set-timezone UTC
 
 
