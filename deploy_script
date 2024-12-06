@@ -10,24 +10,15 @@ rm -r ansible_selfhosted
 git clone https://oauth2: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@github.com/2fucu9/ansible_selfhosted
 cd ansible_selfhosted
 
-export DEBIAN_FRONTEND=noninteractive
-sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /etc/needrestart/needrestart.conf
 apt update &&  apt upgrade -y
 reboot
-
 apt autoremove -y
 reboot
 
 #for errors with updating snap store
 snap-store --quit && sudo snap refresh snap-store
 
-#upgrade release https://linuxconfig.org/ubuntu-upgrade-to-24-04-noble-numbat-a-step-by-step-howto-guide
-lsb_release -a
-nano /etc/update-manager/release-upgrades
-#set Prompt=normal
-ufw allow 1022/tcp
-ufw reload
-apt install update-manager-core -y
+#upgrade release 
 do-release-upgrade
 do-release-upgrade -d
 
@@ -36,8 +27,6 @@ apt install iperf
 iperf -s
 
 apt install iftop
-
-
 
 <#ssh key login https://help.ubuntu.com/community/SSH/OpenSSH/Keys
 mkdir ~/.ssh
