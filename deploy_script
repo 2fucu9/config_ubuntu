@@ -76,6 +76,10 @@ ufw allow 51820/udp
 ufw allow 27987/tcp
 ufw allow 57023/tcp
 
+ufw allow 3479/tcp
+ufw allow 8089/tcp
+ufw allow 51821:51830/udp
+
 ufw allow 22/tcp
 ufw allow 443/tcp
 ufw allow 80/tcp
