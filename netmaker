@@ -1,3 +1,23 @@
+# Allow HTTPS traffic for secure web connections (Caddy, Dashboard, REST API)
+ufw allow 443/tcp
+
+# Allow HTTP traffic for Caddy, which uses port 80 to generate SSL/TLS certificates automatically 
+ufw allow 80/tcp
+
+# Allow WireGuard VPN traffic on UDP port 51821 for secure peer communication 
+ufw allow 51821/udp
+
+# Allow TCP on port 51821 for endpoint detection 
+ufw allow 51821/tcp
+
+#optional: only when hosting DNS on the Netmaker server
+ufw allow 53
+
+# Optional: Necessary for building a Pro server
+ufw allow 8085/tcp
+
+
+
 #install
 wget -qO /root/nm-quick.sh https://raw.githubusercontent.com/gravitl/netmaker/master/scripts/nm-quick.sh && sudo chmod +x /root/nm-quick.sh && sudo /root/nm-quick.sh -p
 
