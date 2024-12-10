@@ -27,5 +27,8 @@ docker kill netmaker netmaker-ui && docker compose up -d
 
 #dashboard.netmaker.qubitpilot.net
 
-
+#https://account.netmaker.io/tenants
+#github sso
+#tenant id: ed123524-b347-4732-8ed8-bab1ec796a3d
+#license key: DX8BAQL/gAABBgFAAAAz/4AAIP/TWf+K/5pZ/5P/6z3/g//U/7N7//QUKkF7/8pkf/+L/9ss//j/qGw1VTAb/+hP
 
