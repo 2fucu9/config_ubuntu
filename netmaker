@@ -5,5 +5,7 @@ wget -O /root/docker-compose.override.yml https://raw.githubusercontent.com/grav
 
 docker kill netmaker netmaker-ui && docker compose up -d
 
+#dashboard.netmaker.qubitpilot.net
+
 
 
