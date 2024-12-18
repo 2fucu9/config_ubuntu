@@ -130,8 +130,8 @@ timedatectl set-timezone UTC
 #download pscp to copy files between windows and ubuntu
 pscp -pw !kYCB#9S5T#SmohehVPw9%YUh2X5kH7Y root@77.238.249.23:/root/pki/smime_ds_qubitpilot.p12 D:\smime_ds_qubitpilot.p12 
 pscp -pw Zaebok24! "D:\vdsina-amskey1-privatekey.pem" root@10.14.17.252:~/.ssh/vdsina-amskey1-privatekey.pem
-pscp -i "C:\Users\media\Nextcloud2\vds\ams\vdsina-amskey1-privatekey.ppk" C:\Users\media\Nextcloud2\vds\ams\vdsina-amskey1-privatekey.pem root@89.110.66.138:/root/.ssh/vdsina-amskey1-privatekey.pem 
-pscp -i "C:\Users\media\Nextcloud2\vds\ams\vdsina-amskey1-privatekey.ppk" D:\soft\nuc13\I226-V_Release_29.1.1.1\PRO1000\LINUX\igb-5.16.3.tar.gz root@0.14.17.31:/root/ixgbe/igb-5.16.3.tar.gz
+pscp -i "C:\Users\media\Nextcloud\vds\ams\vdsina-amskey1-privatekey.ppk" root@77.238.248.41:/tmp/netclient.log C:\Users\media\Nextcloud\vds\ams\netclient.log
+pscp -i "C:\Users\media\Nextclou\vds\ams\vdsina-amskey1-privatekey.ppk" D:\soft\nuc13\I226-V_Release_29.1.1.1\PRO1000\LINUX\igb-5.16.3.tar.gz root@0.14.17.31:/root/ixgbe/igb-5.16.3.tar.gz
 
 scp D:\vdsina-amskey1-privatekey.pem root@10.14.17.252:~/.ssh/vdsina-amskey1-privatekey.pem
 scp -i ~/.ssh/fchkey1.pem /var/kvm/images/adh-wg-tail.img root@10.14.17.252:~/
