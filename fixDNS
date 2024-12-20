@@ -1,0 +1,10 @@
+
+
+Your /etc/resolv.conf is broken. It should not connect to 127.0.0.1#53 but rather 127.0.0.53#53. Let's fix it:
+
+    sudo systemctl enable systemd-resolved
+    sudo systemctl start systemd-resolved
+    sudo unlink /etc/resolv.conf
+    sudo ln -s /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+    Verify that it contains "nameserver 127.0.0.53". If not, reboot to regenerate it
+
