@@ -16,6 +16,9 @@ ignore imagick warning/ not supported in snap
 #update
 snap refresh nextcloud
 
+#view log
+tail -f nextcloud.log
+
 #for video preview generation
 #https://github.com/yannicklescure/wiki-md/blob/main/nextcloud/enable-video-previews-for-nextcloud-snap.md
 
