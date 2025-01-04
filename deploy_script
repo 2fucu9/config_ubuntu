@@ -143,18 +143,6 @@ scp D:\vdsina-amskey1-privatekey.pem root@10.14.17.252:~/.ssh/vdsina-amskey1-pri
 
 scp D:\soft\nuc13\I226-V_Release_29.1.1.1\PRO1000\LINUX\igb-5.16.3.tar.gz root@10.14.17.252:~/.ssh/vdsina-amskey1-privatekey.pem
 
-#3x-ui server
-#generate ssl
-openssl req -x509 -keyout /etc/ssl/certs/3x-ui.key -out /etc/ssl/certs/3x-ui.pem -newkey rsa:4096 -sha256 -days 3650 -nodes -new
-#install 3x-ui
-bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)
-#change access port to random, specify ssl details in panel config
-
-
-
-
-
-
 #password manager vaultwarden https://docs.vultr.com/how-to-install-vaultwarden-on-ubuntu-20-04
 #snap install
 
