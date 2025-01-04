@@ -16,6 +16,9 @@ ignore imagick warning/ not supported in snap
 #update
 snap refresh nextcloud
 
+#check if app is installed
+dpkg -l | grep -E '^ii' | grep ffmpeg
+
 #view log
 tail -f /var/snap/nextcloud/45728/logs/nextcloud.log
 
