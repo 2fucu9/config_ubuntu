@@ -5,6 +5,12 @@ wget http://releases.ubuntu.com/noble/ubuntu-24.04-desktop-amd64.iso
 
 deluser dog
 
+hostnamectl set-hostname crm-is
+timedatectl set-timezone UTC
+
+
+
+
 cd ..
 rm -r ansible_selfhosted
 git clone https://oauth2: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@github.com/2fucu9/ansible_selfhosted
@@ -113,15 +119,6 @@ reboot
 #ufw disable IPv6
 nano /etc/default/ufw
 IPV6=no
-
-#>
-
-
-
-hostnamectl set-hostname 3xui-ny
-timedatectl set-timezone UTC
-
-
 
 
 #>
