@@ -27,4 +27,12 @@ tail -f /var/snap/nextcloud/45728/logs/nextcloud.log
 
 #backup https://github.com/nextcloud-snap/nextcloud-snap/wiki/How-to-backup-your-instance
 
+#mount sshfs drive
+#https://phoenixnap.com/kb/sshfs
+sudo apt install sshfs
+sudo mkdir /mnt/ansible_sshfs
+
+sudo sshfs -o allow_other,default_permissions,IdentityFile=/home/kb/.ssh/id_rsa ubuntu@131.153.142.254:/home/ubuntu/ /mnt/test/
+
+
 #>
