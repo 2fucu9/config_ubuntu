@@ -38,5 +38,8 @@ umount /mnt/ansible_sshfs
 #saves in /var/snap/nextcloud/common/backups
 nextcloud.export
 
+#disable maintenance mode
+cd /var/www/nextcloud
+sudo -u www-data php occ maintenance:mode --off 
 
 #>
