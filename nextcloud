@@ -32,7 +32,11 @@ tail -f /var/snap/nextcloud/45728/logs/nextcloud.log
 sudo apt install sshfs
 sudo mkdir /mnt/ansible_sshfs
 
-sudo sshfs -o allow_other,default_permissions,IdentityFile=~/.ssh/vdsina-amskey1-privatekey.pem root@71.126.150.141:/root/nextcloudbackup/ /mnt/ansible_sshfs
+sshfs -o allow_other,default_permissions,IdentityFile=~/.ssh/vdsina-amskey1-privatekey.key root@71.126.150.141:/root/nextcloudbackup/ /var/snap/nextcloud/common/backups
+umount /mnt/ansible_sshfs
+
+#saves in /var/snap/nextcloud/common/backups
+nextcloud.export
 
 
 #>
