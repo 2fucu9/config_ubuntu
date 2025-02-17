@@ -40,6 +40,6 @@ nextcloud.export
 
 #disable maintenance mode
 cd /var/www/nextcloud
-sudo -u www-data php occ maintenance:mode --off 
+sudo nextcloud.occ maintenance:mode --off
 
 #>
