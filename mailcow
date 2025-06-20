@@ -45,4 +45,5 @@ cd /opt/mailcow-dockerized
 
 # - update
 ./update.sh 
-
+#root passwd reset
+helper-scripts/mailcow-reset-admin.sh
