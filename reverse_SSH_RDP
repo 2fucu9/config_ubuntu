@@ -1,0 +1,221 @@
+
+
+***
+
+# Reverse SSH Tunnel for RDP (Windows → Windows)
+
+**Persistent, Key‑Based, Firewall‑Friendly**
+
+***
+
+## 1. Environment Summary
+
+### Machines & Roles
+
+**SOURCE (Jump Host / Publicly Reachable)**
+
+*   OS: Windows 11
+*   Public IP: `95.165.84.3`
+*   Network:
+    *   Inbound TCP **443** allowed
+    *   Firewall restricted to source IP `38.34.110.236/32`
+*   Services:
+    *   OpenSSH **server** listening on TCP 443
+    *   No inbound RDP exposed
+*   Accounts:
+    *   `tunnel` – local **non‑admin**, SSH only
+    *   No interactive login required for `tunnel`
+
+**TARGET (Restricted / No Inbound Access)**
+
+*   OS: Windows 11
+*   Public IP: `38.34.110.236`
+*   Network:
+    *   No inbound access
+    *   Outbound HTTPS/443 allowed
+*   Services:
+    *   OpenSSH **client**
+    *   RDP service on TCP 3389
+*   Accounts:
+    *   `media` – local user used for **RDP login**
+    *   SSH tunnel is initiated from this machine
+
+***
+
+### Access Model
+
+| Protocol | User     | Where  | Purpose                  |
+| -------- | -------- | ------ | ------------------------ |
+| SSH      | `tunnel` | SOURCE | Encrypted transport only |
+| RDP      | `media`  | TARGET | Interactive login        |
+
+SSH authentication and RDP authentication are **fully independent**.
+
+***
+
+## 2. Architecture Overview
+
+    TARGET (38.34.110.236)
+      └─ outbound SSH (TCP 443)
+           → SOURCE (95.165.84.3)
+                └─ reverse tunnel: localhost:13389 → TARGET:3389
+
+*   Port **13389** exists only on SOURCE and only on `localhost`
+*   No RDP ports are exposed to the internet
+*   Tunnel is encrypted and key‑based
+
+***
+
+## 3. SSH Key Setup (Completed State)
+
+### On TARGET
+
+*   SSH key pair exists at:
+        %USERPROFILE%\.ssh\id_ed25519
+        %USERPROFILE%\.ssh\id_ed25519.pub
+
+### On SOURCE (`tunnel` user)
+
+*   Authorized key file:
+        C:\Users\tunnel\.ssh\authorized_keys
+*   File permissions (required by Windows OpenSSH):
+
+        tunnel            : Full Control
+        SYSTEM            : Full Control
+        NT SERVICE\sshd   : Read
+*   No inheritance, no extra users, no `.txt` extension.
+
+***
+
+## 4. Manual Tunnel Command (Reference)
+
+Executed on **TARGET**:
+
+```powershell
+ssh -p 443 `
+  -i $env:USERPROFILE\.ssh\id_ed25519 `
+  -N `
+  -R 13389:localhost:3389 `
+  tunnel@95.165.84.3
+```
+
+Result:
+
+*   Key‑based authentication
+*   Reverse port forward established
+*   RDP available via `localhost:13389` on SOURCE
+
+***
+
+## 5. RDP Usage
+
+On **SOURCE**:
+
+1.  Launch Remote Desktop:
+        mstsc
+2.  Computer:
+        localhost:13389
+3.  Authenticate as **`media`** (TARGET credentials).
+
+***
+
+## 6. Making the Tunnel Persistent (Task Scheduler)
+
+### Location
+
+Configure **on TARGET**.
+
+### Task Scheduler Settings
+
+**General**
+
+*   Name: `Reverse SSH Tunnel`
+*   Run whether user is logged on or not
+*   User: `media`
+*   Do **not** run as SYSTEM
+*   Do **not** request highest privileges
+
+***
+
+**Trigger**
+
+*   At log on  
+    (Recommended for reliability and correct user profile loading)
+
+***
+
+**Action**
+
+*   Program/script:
+        C:\Windows\System32\OpenSSH\ssh.exe
+*   Arguments:
+        -p 443 -i "%USERPROFILE%\.ssh\id_ed25519" -N -R 13389:localhost:3389 tunnel@95.165.84.3
+*   Start in:
+        %USERPROFILE%
+
+***
+
+**Conditions**
+
+*   Uncheck:
+    *   “Start the task only if on AC power”
+*   Check:
+    *   “Start only if the following network connection is available” → Any
+
+***
+
+**Settings**
+
+*   Allow task to be run on demand ✅
+*   Restart if task fails ✅
+    *   Every: 1 minute
+    *   Retry: Indefinitely
+*   Do **not** stop task after time limit
+
+***
+
+### Validation
+
+*   Reboot TARGET
+*   Confirm Task is running
+*   RDP from SOURCE to `localhost:13389` works without manual SSH
+
+***
+
+## 7. Hardening (Optional but Recommended)
+
+On **SOURCE**, in `C:\ProgramData\ssh\sshd_config`:
+
+```text
+Match User tunnel
+    PasswordAuthentication no
+    PubkeyAuthentication yes
+    AllowTcpForwarding yes
+```
+
+Then:
+
+```powershell
+Restart-Service sshd
+```
+
+***
+
+## 8. Operational Notes
+
+*   Tunnel lifetime = SSH process lifetime.
+*   Task Scheduler auto‑restarts tunnel if network drops.
+*   Firewall exposure is limited to TCP 443 and a single source IP.
+*   No VPN, no third‑party tooling required.
+
+***
+
+## 9. Tear‑Down / Rollback
+
+*   Disable or delete the scheduled task on TARGET.
+*   Remove `tunnel` user or its `authorized_keys` on SOURCE.
+*   Remove inbound firewall rule on SOURCE if no longer needed.
+
+***
+
+**Status:** ✅ Tested and confirmed working across TARGET reboot.
