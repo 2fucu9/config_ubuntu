@@ -42,4 +42,40 @@ nextcloud.export
 cd /var/www/nextcloud
 sudo nextcloud.occ maintenance:mode --off
 
+
+Nextcloud AIO
+1. Обновить mastercontainer
+
+   ```
+   docker exec -it nextcloud-aio-mastercontainer sudo -u www-data php /var/www/docker-aio/php/src/Cron/UpdateMastercontainer.php
+   ```
+2. Обновить остальные контейнеры
+
+```
+docker exec -it nextcloud-aio-mastercontainer sudo -u www-data php /var/www/docker-aio/php/src/Cron/StartAndUpdateContainers.php
+```
+
+Или
+
+1. Перейти по ссылке 
+
+   <https://cloud.qubitpilot.net/settings/admin/overview>
+2. Затем зайти в веб-админку и нажать кнопку Open Nextcloud AIO Interface
+
+![image.png](.attachments.61124/image.png)
+
+Затем остановить контейнеры
+
+![image (2).png](.attachments.61124/image%20%282%29.png)
+
+Затем желательно сделать бекап, там же по кнопке. После остановки контейнеров она должна появиться.
+
+Далее обновить. 
+
+Nextcloud AIO Fail2Ban
+https://github.com/nextcloud/all-in-one/tree/main/community-containers/fail2ban
+
+docker exec -it nextcloud-aio-fail2ban fail2ban-client set nextcloud unbanip 203.113.167.162
+
+
 #>
