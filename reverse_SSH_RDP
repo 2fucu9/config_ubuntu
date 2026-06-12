@@ -29,7 +29,7 @@
 **TARGET (Restricted / No Inbound Access)**
 
 *   OS: Windows 11
-*   Public IP: `38.34.110.236`
+*   Public IP: `38.34.110.236` Lorenzo; 69.140.56.80 - Victor
 *   Network:
     *   No inbound access
     *   Outbound HTTPS/443 allowed
