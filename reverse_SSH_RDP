@@ -1,12 +1,8 @@
 
-
-***
-
 # Reverse SSH Tunnel for RDP (Windows → Windows)
 
 **Persistent, Key‑Based, Firewall‑Friendly**
 
-***
 
 ## 1. Environment Summary
 
@@ -29,7 +25,8 @@
 **TARGET (Restricted / No Inbound Access)**
 
 *   OS: Windows 11
-*   Public IP: `38.34.110.236` Lorenzo; 69.140.56.80 - Victor
+*   Public IP: `38.34.110.236` Lorenzo; 
+                69.140.56.80 - Victor
 *   Network:
     *   No inbound access
     *   Outbound HTTPS/443 allowed
@@ -37,7 +34,8 @@
     *   OpenSSH **client**
     *   RDP service on TCP 3389
 *   Accounts:
-    *   `media` – local user used for **RDP login**
+    *   `media` – local user used for **RDP login** - Lorenzo
+   *   `work2` – local user used for **RDP login** - Victor
     *   SSH tunnel is initiated from this machine
 
 ***
@@ -59,8 +57,12 @@ SSH authentication and RDP authentication are **fully independent**.
       └─ outbound SSH (TCP 443)
            → SOURCE (95.165.84.3)
                 └─ reverse tunnel: localhost:13389 → TARGET:3389
+  TARGET (69.140.56.80)
+      └─ outbound SSH (TCP 443)
+           → SOURCE (95.165.84.3)
+                └─ reverse tunnel: localhost:13390 → TARGET:3389
 
-*   Port **13389** exists only on SOURCE and only on `localhost`
+*   Port **13389 amd 13390** exists only on SOURCE and only on `localhost`
 *   No RDP ports are exposed to the internet
 *   Tunnel is encrypted and key‑based
 
@@ -69,6 +71,7 @@ SSH authentication and RDP authentication are **fully independent**.
 ## 3. SSH Key Setup (Completed State)
 
 ### On TARGET
+ssh-keygen -t ed25519 -C "target-69.140.56.80"
 
 *   SSH key pair exists at:
         %USERPROFILE%\.ssh\id_ed25519
@@ -89,6 +92,8 @@ SSH authentication and RDP authentication are **fully independent**.
 
 ## 4. Manual Tunnel Command (Reference)
 
+Test-NetConnection 95.165.84.3 -Port 443
+
 Executed on **TARGET**:
 
 ```powershell
@@ -106,6 +111,14 @@ Result:
 *   RDP available via `localhost:13389` on SOURCE
 
 ***
+
+Password based auth:
+
+Lorenzo: 38.34.110.236
+ssh -p 443 -o PreferredAuthentications=password -o PubkeyAuthentication=no -N -R 13389:localhost:3389 tunnel@95.165.84.3 -o ServerAliveInterval=30 -o ServerAliveCountMax=3
+
+Victor: 69.140.56.80
+ssh -p 443 -o PreferredAuthentications=password -o PubkeyAuthentication=no -N -R 13390:localhost:3389 tunnel@95.165.84.3 -o ServerAliveInterval=30 -o ServerAliveCountMax=3
 
 ## 5. RDP Usage
 
