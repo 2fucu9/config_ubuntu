@@ -84,6 +84,7 @@ Edit as Administrator:
 C:\ProgramData\ssh\sshd_config
 
 Ensure these settings:
+Port 443
 AllowTcpForwarding yes
 GatewayPorts no
 PasswordAuthentication yes
@@ -110,12 +111,17 @@ Test from Target
 Test-NetConnection 95.165.84.3 -Port 443
 
 
-
+When swicyhing between source machines need to generate a new key on Target
+ssh-keygen -R "[95.165.84.3]:443"
 
 Password based auth:
 
 Lorenzo: 38.34.110.236
 ssh -p 443 -o PreferredAuthentications=password -o PubkeyAuthentication=no -N -R 13389:localhost:3389 tunnel@95.165.84.3 -o ServerAliveInterval=30 -o ServerAliveCountMax=3
+
+To X1 laptop
+ssh -p 443 -o PreferredAuthentications=password -o PubkeyAuthentication=no -N -R 13390:localhost:3389 work@95.165.84.3 -o ServerAliveInterval=30 -o ServerAliveCountMax=3
+
 
 Victor: 69.140.56.80
 ssh -p 443 -o PreferredAuthentications=password -o PubkeyAuthentication=no -N -R 13390:localhost:3389 tunnel@95.165.84.3 -o ServerAliveInterval=30 -o ServerAliveCountMax=3
