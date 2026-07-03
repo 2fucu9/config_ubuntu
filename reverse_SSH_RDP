@@ -67,50 +67,50 @@ SSH authentication and RDP authentication are **fully independent**.
 *   Tunnel is encrypted and key‑based
 
 ***
+Install OpenSSH
 
-## 3. SSH Key Setup (Completed State)
+On SOURCE (server)
+Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
 
-### On TARGET
-ssh-keygen -t ed25519 -C "target-69.140.56.80"
+Start-Service sshd
+Set-Service sshd -StartupType Automatic
 
-*   SSH key pair exists at:
-        %USERPROFILE%\.ssh\id_ed25519
-        %USERPROFILE%\.ssh\id_ed25519.pub
+On TARGET (client)
+Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
 
-### On SOURCE (`tunnel` user)
+Configure
+Lock down SSH on SOURCE (critical)
+Edit as Administrator:
+C:\ProgramData\ssh\sshd_config
 
-*   Authorized key file:
-        C:\Users\tunnel\.ssh\authorized_keys
-*   File permissions (required by Windows OpenSSH):
+Ensure these settings:
+AllowTcpForwarding yes
+GatewayPorts no
+PasswordAuthentication yes
+PubkeyAuthentication no
+PermitTunnel no
 
-        tunnel            : Full Control
-        SYSTEM            : Full Control
-        NT SERVICE\sshd   : Read
-*   No inheritance, no extra users, no `.txt` extension.
+Restart SSH:
+Restart-Service sshd
 
-***
+Router config (SOURCE location)
+Port‑forward one port only:
+TCP 443 → SOURCE internal IP
 
-## 4. Manual Tunnel Command (Reference)
+(If your ISP blocks 22, change SSH to 443 and forward that instead.)
 
+
+Test Source
+Get-Service sshd
+netstat -ano | findstr ":443"
+On SOURCE, run (Admin):
+Get-NetFirewallRule -DisplayName "*SSH*"
+
+Test from Target
 Test-NetConnection 95.165.84.3 -Port 443
 
-Executed on **TARGET**:
 
-```powershell
-ssh -p 443 `
-  -i $env:USERPROFILE\.ssh\id_ed25519 `
-  -N `
-  -R 13389:localhost:3389 `
-  tunnel@95.165.84.3
-```
 
-Result:
-
-*   Key‑based authentication
-*   Reverse port forward established
-*   RDP available via `localhost:13389` on SOURCE
-
-***
 
 Password based auth:
 
