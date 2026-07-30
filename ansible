@@ -1,0 +1,150 @@
+
+
+
+
+
+#ansible install https://www.server-world.info/en/note?os=Ubuntu_22.04&p=ansible&f=1
+#https://docs.ansible.com/ansible/latest/installation_guide/installation_distros.html#installing-ansible-on-ubuntu
+
+
+apt update
+apt install software-properties-common -y
+add-apt-repository --yes --update ppa:ansible/ansible
+apt install ansible -y
+
+
+#mkdir /etc/ansible
+ansible-config init --disabled > ansible.cfg
+nano /etc/ansible/ansible.cfg 
+
+<#
+# create new : set parameters if need (SSH host key checking)
+
+[defaults]
+host_key_checking=True
+inventory = inventory
+forks = 32
+
+[ssh_connection]
+pipelining = true
+
+#>
+
+
+
+
+
+nano /etc/ansible/hosts 
+
+<#
+
+# create new
+# set target hosts
+89.110.66.138 ansible_ssh_private_key_file=~/.ssh/vdsina-amskey1-privatekey.pem
+102.211.206.14 ansible_ssh_private_key_file=~/.ssh/absolute-jnbkey1-privatekey.pem
+77.238.249.223 ansible_ssh_private_key_file=~/.ssh/vdsina-amskey2-privatekey.pem
+193.178.170.136 ansible_ssh_private_key_file=~/.ssh/vdsina-key1-privatekey.pem
+80.85.245.109 ansible_ssh_private_key_file=~/.ssh/vdsina-amskey1-privatekey.pem
+77.238.248.41 ansible_ssh_private_key_file=~/.ssh/vdsina-amskey1-privatekey.pem
+
+89.110.70.187 ansible_ssh_private_key_file=~/.ssh/vdsina-amskey1-privatekey.pem
+
+# set targets as a group
+# any group name
+
+[target_servers]
+# set targets per line
+89.110.66.138 ansible_ssh_private_key_file=~/.ssh/vdsina-amskey1-privatekey.pem
+102.211.206.14 ansible_ssh_private_key_file=~/.ssh/absolute-jnbkey1-privatekey.pem
+77.238.249.223 ansible_ssh_private_key_file=~/.ssh/vdsina-amskey2-privatekey.pem
+193.178.170.136 ansible_ssh_private_key_file=~/.ssh/vdsina-key1-privatekey.pem
+80.85.245.109 ansible_ssh_private_key_file=~/.ssh/vdsina-amskey1-privatekey.pem
+77.238.248.41 ansible_ssh_private_key_file=~/.ssh/vdsina-amskey1-privatekey.pem
+
+#>
+
+
+# confirm settings
+# show all defined hosts
+ansible all --list-hosts 
+ansible target_servers --list-hosts 
+
+ansible 77.238.248.41 -m ping 
+
+nano ufw.yml 
+<#
+- hosts: 89.110.70.187
+  # use privilege (default : root)
+  
+  tasks:
+  # task settings
+  - name: ufw is installed
+    apt:
+      name: ufw
+      state: present
+  - name: ufw is running and enabled
+    service:
+      name: ufw
+      state: started
+      enabled: yes
+
+  - name: Enable and allow all access to tcp port 22
+    community.general.ufw:
+     state: enabled
+     rule: allow
+     port: '22'
+     proto: tcp
+
+  - name: Set logging
+     community.general.ufw:
+      logging: 'on'
+
+
+#>
+ansible-playbook ufw.yml
+
+
+nano initial.yml
+
+<#
+
+- hosts: 89.110.70.187
+  
+  tasks:
+    - name: Run the equivalent of "apt-get update" as a separate step
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Upgrade the OS (apt-get dist-upgrade)
+      apt:
+        upgrade: dist
+        autoremove: true
+
+    - name: Check if a reboot is required.
+      stat:
+        path: /var/run/reboot-required
+        get_checksum: no
+      register: reboot_required_file
+
+    - name: Reboot the server (if required).
+      reboot:
+      when: reboot_required_file.stat.exists == true
+
+    - name: Remove dependencies that are no longer required.
+      ansible.builtin.apt:
+        autoremove: yes
+
+    - name: Configure sshd
+      lineinfile:
+        path: "/etc/ssh/sshd_config"
+        regex: "^(#)?{{item.key}}"
+        line: "{{item.key}} {{item.value}}"
+        state: present
+      loop:
+        - { key: "PermitRootLogin", value: "yes" }
+        - { key: "PasswordAuthentication", value: "no" } 
+      notify:
+        - restart ssh
+
+    #>
