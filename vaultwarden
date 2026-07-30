@@ -108,6 +108,20 @@ nano Caddyfile
 docker-compose up -d
 docker ps
 docker-compose down
+
+#update VW
+docker stop vaultwarden
+
+docker rm vaultwarden
+
+docker pull vaultwarden/server:latest
+cd ~/vaultwarden
+
+docker-compose up -d
+
+
+
+
 docker-compose up -d
 
 https://vw.qubitpilot.net
