@@ -2,21 +2,11 @@
 #Ubuntu 24.04 already had it installed
 mkdir -p /opt/bitwarden2cd /opt/bitwarden
 nano /opt/bitwarden/settings.env
-
 chmod 600 settings.env
+nano /opt/bitwarden/docker-compose.yml
 
 
 
 
 
 
-
-
-
-
-
-
-# Other
-#globalSettings__disableUserRegistration=false
-#globalSettings__hibpApiKey=REPLACE
-#adminSettings__admins=admin1@email.com,admin2@email.com
