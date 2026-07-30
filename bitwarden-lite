@@ -69,6 +69,20 @@ BW_INSTALLATION_KEY=6ynnyO5bvwlZdf2mA1Qp
 # Yubikey
 #globalSettings__yubico__clientId=REPLACE
 #globalSettings__yubico__key=REPLACE
+_____________________________________________________________________________________
+
+chmod 600 settings.env
+
+
+
+
+
+
+
+
+
+
+
 
 # Other
 #globalSettings__disableUserRegistration=false
