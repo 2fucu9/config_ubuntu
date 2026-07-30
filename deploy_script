@@ -8,14 +8,6 @@ deluser dog
 hostnamectl set-hostname crm-is
 timedatectl set-timezone UTC
 
-
-
-
-cd ..
-rm -r ansible_selfhosted
-git clone https://oauth2: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@github.com/2fucu9/ansible_selfhosted
-cd ansible_selfhosted
-
 apt update &&  apt upgrade -y
 reboot
 apt autoremove -y
