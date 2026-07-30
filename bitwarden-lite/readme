@@ -6,6 +6,9 @@ chmod 600 settings.env
 nano /opt/bitwarden/docker-compose.yml
 
 
+docker compose up -d
+docker ps
+
 
 
 
