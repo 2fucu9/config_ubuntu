@@ -5,7 +5,7 @@ wget http://releases.ubuntu.com/noble/ubuntu-24.04-desktop-amd64.iso
 
 deluser dog
 
-hostnamectl set-hostname crm-is
+hostnamectl set-hostname bw-lite-is
 timedatectl set-timezone UTC
 
 apt update &&  apt upgrade -y
