@@ -121,7 +121,7 @@ ssh -p 443 -o PreferredAuthentications=password -o PubkeyAuthentication=no -N -R
 
 To X1 laptop
 ssh -p 443 -o PreferredAuthentications=password -o PubkeyAuthentication=no -N -R 13390:localhost:3389 work@95.165.84.3 -o ServerAliveInterval=30 -o ServerAliveCountMax=3
-
+ssh -p 443 -o PreferredAuthentications=password -o PubkeyAuthentication=no -N -R 13390:localhost:3389 work@72.66.26.57 -o ServerAliveInterval=30 -o ServerAliveCountMax=3
 
 Victor: 69.140.56.80
 ssh -p 443 -o PreferredAuthentications=password -o PubkeyAuthentication=no -N -R 13390:localhost:3389 tunnel@95.165.84.3 -o ServerAliveInterval=30 -o ServerAliveCountMax=3
